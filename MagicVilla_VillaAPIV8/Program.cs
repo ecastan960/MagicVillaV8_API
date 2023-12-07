@@ -1,6 +1,9 @@
 //using Serilog;
 
-using MagicVilla_VillaAPIV8.Logging;
+//using MagicVilla_VillaAPIV8.Logging;
+
+using MagicVilla_VillaAPIV8.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Host.UseSerilog();
 
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
 builder.Services.AddControllers(option =>
 {
     //option.ReturnHttpNotAcceptable=true;
@@ -21,7 +28,7 @@ builder.Services.AddControllers(option =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddSingleton<ILogging,Logging>();
-builder.Services.AddSingleton<ILogging,LoggingV2>();
+//builder.Services.AddSingleton<ILogging,LoggingV2>();
 
 var app = builder.Build();
 
